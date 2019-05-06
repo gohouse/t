@@ -8,9 +8,9 @@ import (
 func TestNewT(t *testing.T) {
 	var b T
 
-	b = New("abc")
+	//b = New("abc")
 	//b = New(1.3)
-	//b = New("2.3")
+	b = New("2.3")
 	//b = New(23)
 	//b = New(true)
 	//b = New(false)
