@@ -54,9 +54,9 @@ func ParseString(o interface{}) string {
 func ParseFloat64(o interface{}) (res float64) {
 	var str = ParseString(o)
 	var strUpper = strings.ToUpper(str)
-	if strUpper=="TRUE" || strUpper=="T" {
+	if strUpper == "TRUE" || strUpper == "T" {
 		str = "1"
-	} else if strUpper=="FALSE" || strUpper=="F" {
+	} else if strUpper == "FALSE" || strUpper == "F" {
 		str = "0"
 	}
 	res, _ = strconv.ParseFloat(str, 64)

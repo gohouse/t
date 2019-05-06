@@ -2,20 +2,29 @@ package t
 
 type T interface {
 	String() string
-	Int64() int64
-	Int() int
-	Uint64() uint64
-	Uint() uint
 	Float64() float64
 	Float32() float32
+	Int64() int64
+	Int() int
+	Int32() int32
+	Int16() int16
+	Int8() int8
+	Uint64() uint64
+	Uint() uint
+	Uint32() uint32
+	Uint16() uint16
+	Uint8() uint8
 	Bool() bool
 }
+
 type Type struct {
 	val interface{}
 }
 
+var _ T = &Type{}
+
 func New(o interface{}) T {
-	return &Type{val:o}
+	return &Type{val: o}
 }
 
 func (t Type) String() string {
@@ -53,6 +62,12 @@ func (t Type) Uint() uint {
 }
 func (t Type) Uint32() uint32 {
 	return uint32(ParseUint(t.val))
+}
+func (t Type) Uint16() uint16 {
+	return uint16(ParseUint(t.val))
+}
+func (t Type) Uint8() uint8 {
+	return uint8(ParseUint(t.val))
 }
 
 func (t Type) Bool() bool {
