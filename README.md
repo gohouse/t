@@ -2,6 +2,10 @@
 golang type extension. Conversion of Basic Types.  
 (golang基本数据类型的相互转换)
 
+## catalog index
+[1. standard type convertion (标准类型转换)](#1-standard-type-convertion标准类型转换)
+[2. type bind convertion (类型定义转换)](#2-type-bind-convertion类型定义转换)
+
 ## usage
 ### 1. standard type convertion(标准类型转换)
 ```go
