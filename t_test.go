@@ -1,7 +1,6 @@
 package t
 
 import (
-	"fmt"
 	"testing"
 )
 
@@ -15,21 +14,48 @@ func TestNewT(t *testing.T) {
 	//b = New(true)
 	//b = New(false)
 	//b = New(nil)
+	//b = New(struct {A string}{"bcd"})
 
-	fmt.Println(b.String())
-	fmt.Println(b.Float64())
-	fmt.Println(b.Float32())
-	fmt.Println(b.Int64())
-	fmt.Println(b.Int())
-	fmt.Println(b.Int32())
-	fmt.Println(b.Int16())
-	fmt.Println(b.Int8())
-	fmt.Println(b.Uint64())
-	fmt.Println(b.Uint())
-	fmt.Println(b.Uint32())
-	fmt.Println(b.Uint16())
-	fmt.Println(b.Uint8())
-	fmt.Println(b.Bool())
+	t.Log(b.String())
+	t.Log(b.Float64())
+	t.Log(b.Float32())
+	t.Log(b.Int64())
+	t.Log(b.Int())
+	t.Log(b.Int32())
+	t.Log(b.Int16())
+	t.Log(b.Int8())
+	t.Log(b.Uint64())
+	t.Log(b.Uint())
+	t.Log(b.Uint32())
+	t.Log(b.Uint16())
+	t.Log(b.Uint8())
+	t.Log(b.Bool())
+}
+
+func TestType_MapStr(t *testing.T) {
+	var m = New(map[string]interface{}{"a":2, "b":"c", "d":"d"})
+	a := m.MapStr()
+	t.Log(a)
+	t.Log(a["a"])
+}
+
+func TestType_Map(t *testing.T) {
+	var m = New(map[interface{}]interface{}{"a":2, 2:"c", 3.3:"d", true:true, false:3})
+	a := m.Map()
+	t.Log(a)
+	t.Log(a["a"])
+	t.Log(a[2].String())
+	t.Log(a[3.3])
+	t.Log(a[true].Bool())
+	t.Log(a[false])
+}
+
+func TestType_Slice(t *testing.T) {
+	var a = New([]string{"a","b"})
+
+	for _,v:= range a.Slice(){
+		t.Log(v.String(), v.Bool())
+	}
 }
 
 func BenchmarkType_Int64(b *testing.B) {

@@ -5,7 +5,8 @@ import (
 )
 
 func TestParser(t *testing.T) {
-	var a = "8.8"
+	var a = "12.34"
+	//var a = map[string]interface{}{"a":1}
 	t.Log(ParseString(a))
 	t.Log(ParseFloat64(a))
 	t.Log(ParseInt64(a))

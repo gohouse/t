@@ -47,7 +47,8 @@ import (
 )
 
 func main()  {
-    var b t.T = t.New("2.3")
+    var b t.T
+    b = t.New("2.3")
 
     fmt.Println(b.String())
     fmt.Println(b.Float64())

@@ -1,5 +1,9 @@
 package t
 
+import (
+	"reflect"
+)
+
 type T interface {
 	String() string
 	Float64() float64
@@ -15,6 +19,10 @@ type T interface {
 	Uint16() uint16
 	Uint8() uint8
 	Bool() bool
+	Slice() []T
+	Map() map[interface{}]T
+	MapStr() map[string]T
+	MapInt() map[int64]T
 }
 
 type Type struct {
@@ -72,4 +80,45 @@ func (t Type) Uint8() uint8 {
 
 func (t Type) Bool() bool {
 	return ParseBool(t.val)
+}
+
+func (t Type) Slice() []T {
+	ref := reflect.ValueOf(t.val)
+	l:=ref.Len()
+	v:=ref.Slice(0,l)
+	var res = []T{}
+	for i:=0;i<l;i++{
+		res = append(res, New(v.Index(i).Interface()))
+	}
+	return res
+}
+
+func (t Type) Map() map[interface{}]T {
+	ref := reflect.ValueOf(t.val)
+	var res = make(map[interface{}]T)
+	keys := ref.MapKeys()
+	for _,item := range keys {
+		res[item.Interface()] = New(ref.MapIndex(item).Interface())
+	}
+	return res
+}
+
+func (t Type) MapStr() map[string]T {
+	ref := reflect.ValueOf(t.val)
+	var res = make(map[string]T)
+	keys := ref.MapKeys()
+	for _,item := range keys {
+		res[item.String()] = New(ref.MapIndex(item).Interface())
+	}
+	return res
+}
+
+func (t Type) MapInt() map[int64]T {
+	ref := reflect.ValueOf(t.val)
+	var res = make(map[int64]T)
+	keys := ref.MapKeys()
+	for _,item := range keys {
+		res[item.Int()] = New(ref.MapIndex(item).Interface())
+	}
+	return res
 }
