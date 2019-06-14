@@ -5,6 +5,7 @@ import (
 )
 
 type T interface {
+	Interface() interface{}
 	String() string
 	Float64() float64
 	Float32() float32
@@ -33,6 +34,10 @@ var _ T = &Type{}
 
 func New(o interface{}) T {
 	return &Type{val: o}
+}
+
+func (t Type) Interface() interface{} {
+	return ParseString(t.val)
 }
 
 func (t Type) String() string {
