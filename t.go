@@ -3,6 +3,11 @@ package t
 import (
 	"reflect"
 )
+type Map map[T]T
+type MapInterface map[interface{}]T
+type MapString map[string]T
+type MapInt64 map[int64]T
+type Slice []T
 
 type T interface {
 	Interface() interface{}
@@ -21,19 +26,28 @@ type T interface {
 	Uint8() uint8
 	Bool() bool
 	Slice() []T
-	Map() map[interface{}]T
-	MapStr() map[string]T
-	MapInt() map[int64]T
+	SliceInterface() []interface{}
+	SliceString() []string
+	SliceInt64() []int64
+	Map() map[T]T
+	MapInterface() map[interface{}]T
+	MapString() map[string]T
+	MapInt64() map[int64]T
 }
 
 type Type struct {
 	val interface{}
 }
 
-var _ T = &Type{}
+//var _ T = &Type{}
 
-func New(o interface{}) T {
-	return &Type{val: o}
+func New(o interface{}) Type {
+	switch o.(type) {
+	case T:
+		return Type{o.(T).Interface()}
+	default:
+		return Type{val: o}
+	}
 }
 
 func (t Type) Interface() interface{} {
@@ -98,32 +112,66 @@ func (t Type) Slice() []T {
 	return res
 }
 
-func (t Type) Map() map[interface{}]T {
+func (t Type) SliceInterface() []interface{} {
+	s := t.Slice()
+	var res = []interface{}{}
+	for _,item := range s {
+		res = append(res, item.Interface())
+	}
+	return res
+}
+
+func (t Type) SliceString() []string {
+	s := t.Slice()
+	var res = []string{}
+	for _,item := range s {
+		res = append(res, item.String())
+	}
+	return res
+}
+
+func (t Type) SliceInt64() []int64 {
+	s := t.Slice()
+	var res = []int64{}
+	for _,item := range s {
+		res = append(res, item.Int64())
+	}
+	return res
+}
+
+func (t Type) Map() map[T]T {
 	ref := reflect.ValueOf(t.val)
+	var res = make(map[T]T)
+	keys := ref.MapKeys()
+	for _,item := range keys {
+		res[New(item.Interface())] = New(ref.MapIndex(item).Interface())
+	}
+	return res
+}
+
+func (t Type) MapInterface() map[interface{}]T {
+	m := t.Map()
 	var res = make(map[interface{}]T)
-	keys := ref.MapKeys()
-	for _,item := range keys {
-		res[item.Interface()] = New(ref.MapIndex(item).Interface())
+	for k,v := range m{
+		res[k.Interface()] = v
 	}
 	return res
 }
 
-func (t Type) MapStr() map[string]T {
-	ref := reflect.ValueOf(t.val)
+func (t Type) MapString() map[string]T {
+	m := t.Map()
 	var res = make(map[string]T)
-	keys := ref.MapKeys()
-	for _,item := range keys {
-		res[item.String()] = New(ref.MapIndex(item).Interface())
+	for k,v := range m{
+		res[k.String()] = v
 	}
 	return res
 }
 
-func (t Type) MapInt() map[int64]T {
-	ref := reflect.ValueOf(t.val)
+func (t Type) MapInt64() map[int64]T {
+	m := t.Map()
 	var res = make(map[int64]T)
-	keys := ref.MapKeys()
-	for _,item := range keys {
-		res[item.Int()] = New(ref.MapIndex(item).Interface())
+	for k,v := range m{
+		res[k.Int64()] = v
 	}
 	return res
 }
