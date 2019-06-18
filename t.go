@@ -106,7 +106,7 @@ func (t Type) Bool() bool {
 }
 
 func (t Type) Slice() Slice {
-	ref := reflect.ValueOf(t.val)
+	ref := reflect.Indirect(reflect.ValueOf(t.val))
 	l := ref.Len()
 	v := ref.Slice(0, l)
 	var res = Slice{}
