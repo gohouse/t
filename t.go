@@ -8,6 +8,7 @@ type Map map[T]T
 type MapInterface map[interface{}]T
 type MapString map[string]T
 type MapInt64 map[int64]T
+type MapStringInterface map[string]interface{}
 type Slice []T
 type SliceInterface []interface{}
 type SliceString []string
@@ -31,12 +32,14 @@ type T interface {
 	Bool() bool
 	Slice() Slice
 	SliceInterface() []interface{}
+	SliceMapStringInterface() []map[string]interface{}
 	SliceString() []string
 	SliceInt64() []int64
 	Map() Map
 	MapInterface() MapInterface
 	MapString() MapString
 	MapInt64() MapInt64
+	MapStringInterface() map[string]interface{}
 }
 
 type Type struct {
@@ -125,6 +128,15 @@ func (t Type) SliceInterface() []interface{} {
 	return res
 }
 
+func (t Type) SliceMapStringInterface() []map[string]interface{} {
+	s := t.Slice()
+	var res = []map[string]interface{}{}
+	for _, item := range s {
+		res = append(res, item.MapStringInterface())
+	}
+	return res
+}
+
 func (t Type) SliceString() []string {
 	s := t.Slice()
 	var res = []string{}
@@ -167,6 +179,15 @@ func (t Type) MapString() MapString {
 	var res = make(MapString)
 	for k, v := range m {
 		res[k.String()] = v
+	}
+	return res
+}
+
+func (t Type) MapStringInterface() map[string]interface{} {
+	m := t.Map()
+	var res = make(map[string]interface{})
+	for k, v := range m {
+		res[k.String()] = v.Interface()
 	}
 	return res
 }
