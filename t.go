@@ -156,7 +156,7 @@ func (t Type) SliceInt64() []int64 {
 }
 
 func (t Type) Map() Map {
-	ref := reflect.ValueOf(t.val)
+	ref := reflect.Indirect(reflect.ValueOf(t.val))
 	var res = make(Map)
 	keys := ref.MapKeys()
 	for _, item := range keys {
