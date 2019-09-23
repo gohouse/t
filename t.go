@@ -40,6 +40,7 @@ type T interface {
 	MapString() MapString
 	MapInt64() MapInt64
 	MapStringInterface() map[string]interface{}
+	SliceMapString() []MapString
 }
 
 type Type struct {
@@ -199,4 +200,13 @@ func (t Type) MapInt64() MapInt64 {
 		res[k.Int64()] = v
 	}
 	return res
+}
+
+func (t Type) SliceMapString() []MapString {
+	m := t.Slice()
+	var result []MapString
+	for _,item:= range m{
+		result = append(result, item.MapString())
+	}
+	return result
 }
