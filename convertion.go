@@ -7,6 +7,12 @@ import (
 )
 
 func ParseString(o interface{}) string {
+	switch o.(type) {
+	case float64:
+		return fmt.Sprintf("%v",int64(o.(float64)))
+	case float32:
+		return fmt.Sprintf("%v",int64(o.(float32)))
+	}
 	return fmt.Sprint(o)
 }
 
