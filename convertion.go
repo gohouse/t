@@ -12,6 +12,8 @@ func ParseString(o interface{}) string {
 		return fmt.Sprintf("%v",int64(o.(float64)))
 	case float32:
 		return fmt.Sprintf("%v",int64(o.(float32)))
+	case []byte:
+		return string(o.([]byte))
 	}
 	return fmt.Sprint(o)
 }

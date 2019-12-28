@@ -21,3 +21,9 @@ func TestParser(t *testing.T) {
 	t.Log(ParseUint(a))
 	t.Log(ParseBool(a))
 }
+
+func TestParseString(t *testing.T) {
+	var a = []byte("10")
+
+	t.Log(ParseString(a))
+}
