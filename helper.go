@@ -35,4 +35,3 @@ func Min(args ...interface{}) int {
 	}
 	return min
 }
-

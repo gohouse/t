@@ -86,3 +86,17 @@ result
 true
 ```
 
+### 3. complex type converts (复杂类型转换)
+```go
+func convertComplex() {
+	var cc interface{}
+	cc = map[string]int{
+		"a": 1,
+		"b": 2,
+	}
+	fmt.Printf("%#v \n", t.New(cc).Map())
+	fmt.Printf("%#v \n", t.New(cc).MapInterface())
+	fmt.Printf("%#v \n", t.New(cc).MapString())
+	fmt.Printf("%#v \n", t.New(cc).MapStringInterface())
+}
+```

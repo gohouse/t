@@ -6,8 +6,17 @@ import (
 )
 
 func main() {
-	var mobile float64 = 12341234
+	convertComplex()
+}
 
-	res:=t.New(mobile).String()
-	fmt.Println(res)
+func convertComplex() {
+	var cc interface{}
+	cc = map[string]int{
+		"a": 1,
+		"b": 2,
+	}
+	fmt.Printf("%#v \n", t.New(cc).Map())
+	fmt.Printf("%#v \n", t.New(cc).MapInterface())
+	fmt.Printf("%#v \n", t.New(cc).MapString())
+	fmt.Printf("%#v \n", t.New(cc).MapStringInterface())
 }
