@@ -144,6 +144,10 @@ func ParseString(o interface{}) string {
 		return ""
 	}
 	switch value := o.(type) {
+	case string:
+		return value
+	case []byte:
+		return string(value)
 	case int:
 		return strconv.Itoa(value)
 	case int8:
@@ -170,10 +174,6 @@ func ParseString(o interface{}) string {
 		return strconv.FormatFloat(value, 'f', -1, 64)
 	case bool:
 		return strconv.FormatBool(value)
-	case string:
-		return value
-	case []byte:
-		return string(value)
 	case *time.Time:
 		if value == nil {
 			return ""
