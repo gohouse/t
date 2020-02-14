@@ -1,6 +1,7 @@
 package t
 
 import (
+	"encoding/json"
 	"reflect"
 )
 
@@ -16,14 +17,14 @@ type MapString map[string]T
 // MapInt64 ...
 type MapInt64 map[int64]T
 
-// MapStringInterface ...
-type MapStringInterface map[string]interface{}
+//// MapStringInterface ...
+//type MapStringInterface map[string]interface{}
 
 // Slice ...
 type Slice []T
 
-// SliceInterface ...
-type SliceInterface []interface{}
+//// SliceInterface ...
+//type SliceInterface []interface{}
 
 // SliceString ...
 type SliceString []string
@@ -48,6 +49,8 @@ type T interface {
 	Uint16() uint16
 	Uint8() uint8
 	Bool() bool
+	Byte() byte
+	Bytes() []byte
 	Slice() Slice
 	SliceInterface() []interface{}
 	SliceMapStringInterface() []map[string]interface{}
@@ -59,6 +62,7 @@ type T interface {
 	MapInt64() MapInt64
 	MapStringInterface() map[string]interface{}
 	SliceMapString() []MapString
+	BindJson(o interface{}) error
 }
 
 // Type ...
@@ -151,6 +155,16 @@ func (t Type) Uint8() uint8 {
 // Bool ...
 func (t Type) Bool() bool {
 	return ParseBool(t.val)
+}
+
+// Byte ...
+func (t Type) Byte() byte {
+	return ParseByte(t.val)
+}
+
+// Bytes ...
+func (t Type) Bytes() []byte {
+	return ParseBytes(t.val)
 }
 
 // Slice ...
@@ -264,4 +278,9 @@ func (t Type) SliceMapString() []MapString {
 		result = append(result, item.MapString())
 	}
 	return result
+}
+
+// BindJson 将绑定结果当做json,来绑定到对象上
+func (t Type) BindJson(o interface{}) error {
+	return json.Unmarshal(t.Bytes(),o)
 }

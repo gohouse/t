@@ -61,6 +61,17 @@ func TestType_Slice(t *testing.T) {
 	}
 }
 
+func TestType_BindJson(t *testing.T) {
+	type json struct {
+		A interface{} `json:"a"`
+		B string `json:"b"`
+	}
+	var a = map[string]interface{}{"a":1,"b":"bbb"}
+	var js json
+	New(a).BindJson(&js)
+	t.Logf("%+v",js)
+}
+
 func BenchmarkType_Int64(b *testing.B) {
 	var a T = New("2.3")
 	for i := 0; i < b.N; i++ {
