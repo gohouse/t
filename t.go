@@ -3,6 +3,7 @@ package t
 import (
 	"encoding/json"
 	"reflect"
+	"strings"
 )
 
 // Map ...
@@ -63,6 +64,7 @@ type T interface {
 	MapStringInterface() map[string]interface{}
 	SliceMapString() []MapString
 	BindJson(o interface{}) error
+	Extract(key string, defaultVal ...interface{}) interface{}
 }
 
 // Type ...
@@ -222,10 +224,23 @@ func (t Type) SliceInt64() []int64 {
 // Map ...
 func (t Type) Map() Map {
 	ref := reflect.Indirect(reflect.ValueOf(t.val))
-	var res = make(Map)
-	keys := ref.MapKeys()
-	for _, item := range keys {
-		res[New(item.Interface())] = New(ref.MapIndex(item).Interface())
+	var res = Map{}
+	switch ref.Kind() {
+	case reflect.Map:
+		//var res = make(Map)
+		keys := ref.MapKeys()
+		for _, item := range keys {
+			res[New(item.Interface())] = New(ref.MapIndex(item).Interface())
+		}
+	default:
+		var res2 = map[string]interface{}{}
+		err := t.BindJson(&res2)
+		if err != nil {
+			return Map{}
+		}
+		for k, v := range res2 {
+			res[New(k)] = New(v)
+		}
 	}
 	return res
 }
@@ -282,5 +297,36 @@ func (t Type) SliceMapString() []MapString {
 
 // BindJson 将绑定结果当做json,来绑定到对象上
 func (t Type) BindJson(o interface{}) error {
-	return json.Unmarshal(t.Bytes(),o)
+	return json.Unmarshal(t.Bytes(), o)
+}
+// Extract 多层次抽取值
+func (t Type) Extract(key string, defaultVal ...interface{}) interface{} {
+	if key == "" {
+		return nil
+	}
+	var split []string
+	// 如果key包含了点,则为多级调用
+	if strings.Contains(key, ".") {
+		split = strings.Split(key, ".")
+	} else { // 如果key不包含点, 则就是直接一级调用
+		split = []string{key}
+	}
+
+	// 取指定语言的配置
+	var currentMap = t.Map()
+	var currentVal interface{}
+	for _, item := range split {
+		if v, ok := currentMap[New(item)]; ok {
+			currentMap = New(v).Map()
+			currentVal = v
+		} else {
+			break
+		}
+	}
+
+	// 如果没有取到且传入了默认值, 则返回默认值
+	if currentVal == nil && len(defaultVal) > 0 {
+		return defaultVal[0]
+	}
+	return currentVal
 }

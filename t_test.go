@@ -53,6 +53,13 @@ func TestType_Map(t *testing.T) {
 	t.Log(a[false])
 }
 
+func TestType_Map2(t *testing.T) {
+	var m = New(`{"a": 2, "b":3,"33":{"331":"d"}}`)
+	a := m.Map()
+	t.Log(a[New("a")])
+	t.Log(m.Extract("33.331"))
+}
+
 func TestType_Slice(t *testing.T) {
 	var a = New([]string{"a", "b"})
 
