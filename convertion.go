@@ -36,8 +36,30 @@ func ParseFloat32(o interface{}) float32 {
 
 // ParseInt64 ...
 func ParseInt64(o interface{}) (res int64) {
-	res = int64(ParseFloat64(o))
-	return
+	switch val := o.(type) {
+	case int64:
+		return val
+	case int:
+		return int64(val)
+	case int32:
+		return int64(val)
+	case int16:
+		return int64(val)
+	case int8:
+		return int64(val)
+	case uint64:
+		return int64(val)
+	case uint:
+		return int64(val)
+	case uint32:
+		return int64(val)
+	case uint16:
+		return int64(val)
+	case uint8:
+		return int64(val)
+	default:
+		return int64(ParseFloat64(o))
+	}
 }
 
 // ParseInt32 ...

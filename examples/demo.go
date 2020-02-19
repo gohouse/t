@@ -6,6 +6,8 @@ import (
 )
 
 func main() {
+	var a t.Type = t.New(222)
+	fmt.Printf("%#v \n",a.Slice())
 	convertComplex()
 }
 

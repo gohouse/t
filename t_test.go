@@ -68,14 +68,14 @@ func TestType_Slice(t *testing.T) {
 	}
 }
 
-func TestType_BindJson(t *testing.T) {
+func TestType_Bind(t *testing.T) {
 	type json struct {
 		A interface{} `json:"a"`
 		B string `json:"b"`
 	}
 	var a = map[string]interface{}{"a":1,"b":"bbb"}
 	var js json
-	New(a).BindJson(&js)
+	New(a).Bind(&js)
 	t.Logf("%+v",js)
 }
 
