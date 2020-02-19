@@ -300,6 +300,7 @@ func (t Type) BindJson(o interface{}) error {
 	return json.Unmarshal(t.Bytes(), o)
 }
 // Extract 多层次抽取值
+// var m = New(`{"a": 2, "b":3,"33":{"cc":"d"}}`); println(m.Extract("33.cc")) // d
 func (t Type) Extract(key string, defaultVal ...interface{}) interface{} {
 	if key == "" {
 		return nil
