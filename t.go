@@ -63,7 +63,7 @@ type T interface {
 	MapInt64() MapInt64
 	MapStringInterface() map[string]interface{}
 	SliceMapString() []MapString
-	BindJson(o interface{}) error
+	Bind(o interface{}) error
 	Extract(key string, defaultVal ...interface{}) interface{}
 }
 
@@ -234,7 +234,7 @@ func (t Type) Map() Map {
 		}
 	default:
 		var res2 = map[string]interface{}{}
-		err := t.BindJson(&res2)
+		err := t.Bind(&res2)
 		if err != nil {
 			return Map{}
 		}
@@ -295,8 +295,8 @@ func (t Type) SliceMapString() []MapString {
 	return result
 }
 
-// BindJson 将绑定结果当做json,来绑定到对象上
-func (t Type) BindJson(o interface{}) error {
+// Bind 将绑定结果当做json,来绑定到对象上
+func (t Type) Bind(o interface{}) error {
 	return json.Unmarshal(t.Bytes(), o)
 }
 // Extract 多层次抽取值
