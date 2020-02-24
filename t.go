@@ -125,4 +125,3 @@ func (t Type) Byte() byte {
 func (t Type) Bytes() []byte {
 	return ParseBytes(t.val)
 }
-

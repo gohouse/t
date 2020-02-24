@@ -7,7 +7,7 @@ import (
 
 type iHandle interface {
 	Bind(o interface{}) error
-	Extract(key string, defaultVal ...interface{}) interface{}
+	Extract(key string, defaultVal ...interface{}) T
 }
 
 // Bind 将绑定结果当做json,来绑定到对象上
@@ -16,7 +16,7 @@ func (t Type) Bind(o interface{}) error {
 }
 // Extract 多层次抽取值
 // 例: var m = New(`{"a": 2, "b":3,"33":{"cc":"d"}}`); println(m.Extract("33.cc")) // d
-func (t Type) Extract(key string, defaultVal ...interface{}) interface{} {
+func (t Type) Extract(key string, defaultVal ...interface{}) T {
 	if key == "" {
 		return nil
 	}
@@ -42,7 +42,7 @@ func (t Type) Extract(key string, defaultVal ...interface{}) interface{} {
 
 	// 如果没有取到且传入了默认值, 则返回默认值
 	if currentVal == nil && len(defaultVal) > 0 {
-		return defaultVal[0]
+		currentVal = defaultVal[0]
 	}
-	return currentVal
+	return New(currentVal)
 }

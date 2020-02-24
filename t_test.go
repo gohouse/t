@@ -1,6 +1,8 @@
 package t
 
 import (
+	"fmt"
+	"io/ioutil"
 	"testing"
 )
 
@@ -84,4 +86,11 @@ func BenchmarkType_Int64(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		a.Int64()
 	}
+}
+
+func TestType_Read(t *testing.T) {
+	res := New("abc")
+	//res := New(strings.NewReader("abc"))
+	b,_:=ioutil.ReadAll(res)
+	fmt.Printf("%s\n",b)
 }
