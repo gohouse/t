@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/gohouse/t"
+	"github.com/gohouse/golib/t"
 )
 
 func main() {

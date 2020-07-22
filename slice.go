@@ -5,6 +5,7 @@ import "reflect"
 type iSlice interface {
 	Slice() Slice
 	SliceString() []string
+	SliceFloat64() []float64
 	SliceInt64() []int64
 	SliceInt() []int
 	SliceInterface() []interface{}
@@ -17,6 +18,9 @@ type Slice []T
 
 // Slice ...
 func (t Type) Slice() Slice {
+	if t.val == nil {
+		return Slice{}
+	}
 	ref := reflect.Indirect(reflect.ValueOf(t.val))
 	var res = Slice{}
 	switch ref.Kind() {
@@ -58,6 +62,16 @@ func (t Type) SliceString() []string {
 	var res = []string{}
 	for _, item := range s {
 		res = append(res, item.String())
+	}
+	return res
+}
+
+// SliceFloat64 ...
+func (t Type) SliceFloat64() []float64 {
+	s := t.Slice()
+	var res = []float64{}
+	for _, item := range s {
+		res = append(res, item.Float64())
 	}
 	return res
 }

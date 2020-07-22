@@ -2,7 +2,6 @@ package t
 
 import (
 	"fmt"
-	"io/ioutil"
 	"testing"
 )
 
@@ -73,12 +72,12 @@ func TestType_Slice(t *testing.T) {
 func TestType_Bind(t *testing.T) {
 	type json struct {
 		A interface{} `json:"a"`
-		B string `json:"b"`
+		B string      `json:"b"`
 	}
-	var a = map[string]interface{}{"a":1,"b":"bbb"}
+	var a = map[string]interface{}{"a": 1, "b": "bbb"}
 	var js json
 	New(a).Bind(&js)
-	t.Logf("%+v",js)
+	t.Logf("%+v", js)
 }
 
 func BenchmarkType_Int64(b *testing.B) {
@@ -88,9 +87,15 @@ func BenchmarkType_Int64(b *testing.B) {
 	}
 }
 
-func TestType_Read(t *testing.T) {
-	res := New("abc")
-	//res := New(strings.NewReader("abc"))
-	b,_:=ioutil.ReadAll(res)
-	fmt.Printf("%s\n",b)
+func TestType_Map3(t *testing.T) {
+	//res := New([]string{"a","b"})
+	res := New(`{"aa":11,"bb":["a","b"]}`)
+	//res := New([]map[string]interface{}{
+	//	{"aa":11,"bb":[]string{"a","b"}},
+	//})
+	r := res.MapStringInterface()
+	fmt.Println(r)
+	fmt.Println("res.IsJsonSlice:",res.IsJsonMap())
+	fmt.Printf("res.Extract-0.bb.0 : %#v\n",res.Extract("0.bb.0").String())
+	fmt.Printf("res.Extract -bb: %#v\n",res.Extract("bb.0").String())
 }

@@ -29,6 +29,9 @@ type MapInt map[int]T
 
 // Map ...
 func (t Type) Map() Map {
+	if t.val==nil {
+		return Map{}
+	}
 	ref := reflect.Indirect(reflect.ValueOf(t.val))
 	var res = Map{}
 	switch ref.Kind() {

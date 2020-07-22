@@ -14,6 +14,7 @@ type iHandle interface {
 func (t Type) Bind(o interface{}) error {
 	return json.Unmarshal(t.Bytes(), o)
 }
+
 // Extract 多层次抽取值
 // 例: var m = New(`{"a": 2, "b":3,"33":{"cc":"d"}}`); println(m.Extract("33.cc")) // d
 func (t Type) Extract(key string, defaultVal ...interface{}) T {
@@ -29,13 +30,31 @@ func (t Type) Extract(key string, defaultVal ...interface{}) T {
 	}
 
 	// 取指定语言的配置
-	var currentMap = t.Map()
-	var currentVal interface{}
+	//var currentMap = t.Map()
+	var currentVal interface{} = t
 	for _, item := range split {
-		if v, ok := currentMap[New(item)]; ok {
-			currentMap = New(v).Map()
-			currentVal = v
+		currentT := New(currentVal)
+		if currentT.IsJsonMap() {
+			var currentMap = currentT.Map()
+			if v, ok := currentMap[New(item)]; ok {
+				//currentMap = New(v).Map()
+				currentVal = v
+			} else {
+				currentVal = nil
+				break
+			}
+		} else if currentT.IsJsonSlice() {
+			var currentSlice = currentT.Slice()
+			var itemT = New(item)
+			var itemIdx = int(itemT.Uint())
+			if itemT.IsInteger() && len(currentSlice) > itemIdx {
+				currentVal = currentSlice[itemIdx]
+			} else {
+				currentVal = nil
+				break
+			}
 		} else {
+			currentVal = nil
 			break
 		}
 	}

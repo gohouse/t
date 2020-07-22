@@ -2,6 +2,7 @@ package t
 
 import (
 	"testing"
+	"unicode/utf8"
 )
 
 func TestParser(t *testing.T) {
@@ -26,4 +27,11 @@ func TestParseString(t *testing.T) {
 	var a = []byte("10")
 
 	t.Log(ParseString(a))
+}
+
+func TestRunes(t *testing.T) {
+	var a= "你好啊abc"
+	t.Log(len(a))
+	t.Log(utf8.RuneCountInString(a))
+	t.Log(len(Runes(a)))
 }
