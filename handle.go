@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// iHandle json或者map,struct对象绑定和字段抽取
 type iHandle interface {
 	Bind(o interface{}) error
 	Extract(key string, defaultVal ...interface{}) T

@@ -10,29 +10,29 @@ import (
 
 // iDetermine 判断
 type iDetermine interface {
-	IsNumeric() bool
-	IsInteger() bool
-	IsNumberic() bool
-	IsFloat() bool
-	IsZero() bool
-	IsChineseCharacters() bool // 是否汉字
-	IsHost() bool              // 是否域名
-	IsUrl() bool               // 是否互联网url地址
-	IsEmail() bool             // 是否邮箱地址
-	IsChineseMobile() bool     // 是否中国手机号
-	IsDate() bool              // 是否常用的日期格式
-	IsDateTime() bool          // 是否常用的日期时间格式
-	IsIpV4() bool              // 是否ipv4地址
-	IsIpV6() bool              // 是否ipv6地址
-	IsIp() bool                // 是否ip地址
-	IsID() bool                // 是否身份证号码
-	IsXml() bool               // 是否xml
-	IsJson() bool              // 是否json
-	IsJsonMap() bool
-	IsJsonSlice() bool
-	IsBetween(min, max interface{}) bool
-	IsBetweenFloat64(min, max float64) bool
-	IsBetweenAlpha(min, max string) bool
+	IsNumeric() bool                        // 是否数字
+	IsInteger() bool                        // 是否整数
+	IsFloat() bool                          // 是否浮点数
+	IsZero() bool                           // 是否零值
+	IsChineseCharacters() bool              // 是否汉字
+	IsChineseName() bool                    // 是否中文名字
+	IsHost() bool                           // 是否域名
+	IsUrl() bool                            // 是否互联网url地址
+	IsEmail() bool                          // 是否邮箱地址
+	IsChineseMobile() bool                  // 是否中国手机号
+	IsDate() bool                           // 是否常用的日期格式
+	IsDateTime() bool                       // 是否常用的日期时间格式
+	IsIpV4() bool                           // 是否ipv4地址
+	IsIpV6() bool                           // 是否ipv6地址
+	IsIp() bool                             // 是否ip地址
+	IsChineseID() bool                      // 是否中国大陆身份证号码
+	IsXml() bool                            // 是否xml
+	IsJson() bool                           // 是否json
+	IsJsonMap() bool                        // 是否是json对象
+	IsJsonSlice() bool                      // 是否是json数组
+	IsBetween(min, max interface{}) bool    // 是否在两数之间
+	IsBetweenFloat64(min, max float64) bool // 是否在两个浮点数之间
+	IsBetweenAlpha(min, max string) bool    // 是否在两个字符之间
 }
 
 // IsInteger 是否为整数
@@ -55,20 +55,16 @@ func (t Type) IsFloat() bool {
 	}
 }
 
-// IsJsonSlice ...
+// IsJsonSlice 是否json数组
 func (t Type) IsJsonSlice() bool {
 	var js []interface{}
 	return json.Unmarshal(t.Bytes(), &js) == nil
 }
 
-// IsJsonMap ...
+// IsJsonMap 是否json对象
 func (t Type) IsJsonMap() bool {
 	var js = map[string]interface{}{}
 	return json.Unmarshal(t.Bytes(), &js) == nil
-}
-
-func (t Type) IsNumberic() bool {
-	return t.String() == New(t.Float64()).String()
 }
 
 func (t Type) IsZero() bool {
@@ -77,7 +73,13 @@ func (t Type) IsZero() bool {
 
 // IsChineseCharacters 是否汉字
 func (t Type) IsChineseCharacters() bool {
-	exp := regexp.MustCompile(`^[\u4e00-\u9fa5]{0,}$`)
+	exp := regexp.MustCompile("^[\u4e00-\u9fa5]*$")
+	return exp.Match(t.Bytes())
+}
+
+// IsChineseCharacters 是否中国的名字
+func (t Type) IsChineseName() bool {
+	exp := regexp.MustCompile("^[\u4e00-\u9fa5]+[[·•●][\u4e00-\u9fa5]+]*$")
 	return exp.Match(t.Bytes())
 }
 
@@ -106,8 +108,8 @@ func (t Type) IsUrl() bool {
 	return exp.Match(t.Bytes())
 }
 
-// IsID 是否中国大陆身份证号码
-func (t Type) IsID() bool {
+// IsChineseID 是否中国大陆身份证号码
+func (t Type) IsChineseID() bool {
 	exp := regexp.MustCompile(`^([0-9]){7,18}(x|X)?$`)
 	return exp.Match(t.Bytes())
 }
@@ -158,7 +160,7 @@ func (t Type) IsJson() bool {
 func (t Type) IsBetween(min, max interface{}) bool {
 	var mi = New(min)
 	var ma = New(max)
-	if New(min).IsNumberic() {
+	if New(min).IsNumeric() {
 		return t.IsBetweenFloat64(mi.Float64(), ma.Float64())
 	}
 	return t.IsBetweenAlpha(mi.String(), ma.String())

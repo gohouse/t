@@ -4,24 +4,24 @@ import "reflect"
 
 type iMap interface {
 	Map() Map
-	MapInterface() MapInterface
-	MapString() MapString
-	MapInt64() MapInt64
-	MapInt() MapInt
+	MapInterfaceT() MapInterfaceT
+	MapStringT() MapStringT
+	MapIntT64T() MapIntT64T
+	MapIntT() MapIntT
 	MapStringInterface() map[string]interface{}
 }
 // Map ...
 type Map map[T]T
 
-// MapInterface ...
-type MapInterface map[interface{}]T
+// MapInterfaceT ...
+type MapInterfaceT map[interface{}]T
 
-// MapString ...
-type MapString map[string]T
+// MapStringT ...
+type MapStringT map[string]T
 
-// MapInt64 ...
-type MapInt64 map[int64]T
-type MapInt map[int]T
+// MapIntT64T ...
+type MapIntT64T map[int64]T
+type MapIntT map[int]T
 
 //// MapStringInterface ...
 //type MapStringInterface map[string]interface{}
@@ -54,20 +54,20 @@ func (t Type) Map() Map {
 	return res
 }
 
-// MapInterface ...
-func (t Type) MapInterface() MapInterface {
+// MapInterfaceT ...
+func (t Type) MapInterfaceT() MapInterfaceT {
 	m := t.Map()
-	var res = make(MapInterface)
+	var res = make(MapInterfaceT)
 	for k, v := range m {
 		res[k.Interface()] = v
 	}
 	return res
 }
 
-// MapString ...
-func (t Type) MapString() MapString {
+// MapStringT ...
+func (t Type) MapStringT() MapStringT {
 	m := t.Map()
-	var res = make(MapString)
+	var res = make(MapStringT)
 	for k, v := range m {
 		res[k.String()] = v
 	}
@@ -84,20 +84,20 @@ func (t Type) MapStringInterface() map[string]interface{} {
 	return res
 }
 
-// MapInt64 ...
-func (t Type) MapInt64() MapInt64 {
+// MapIntT64T ...
+func (t Type) MapIntT64T() MapIntT64T {
 	m := t.Map()
-	var res = make(MapInt64)
+	var res = make(MapIntT64T)
 	for k, v := range m {
 		res[k.Int64()] = v
 	}
 	return res
 }
 
-// MapInt64 ...
-func (t Type) MapInt() MapInt {
+// MapIntT64T ...
+func (t Type) MapIntT() MapIntT {
 	m := t.Map()
-	var res = make(MapInt)
+	var res = make(MapIntT)
 	for k, v := range m {
 		res[k.Int()] = v
 	}

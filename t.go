@@ -8,6 +8,7 @@ type T interface {
 	iMap
 	iHandle
 	Interface() interface{}
+	// String 转换对象为 string 类型
 	String() string
 	Float64() float64
 	Float32() float32

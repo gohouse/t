@@ -95,8 +95,8 @@ func convertComplex() {
 		"b": 2,
 	}
 	fmt.Printf("%#v \n", t.New(cc).Map())
-	fmt.Printf("%#v \n", t.New(cc).MapInterface())
-	fmt.Printf("%#v \n", t.New(cc).MapString())
+	fmt.Printf("%#v \n", t.New(cc).MapInterfaceT())
+	fmt.Printf("%#v \n", t.New(cc).MapStringT())
 	fmt.Printf("%#v \n", t.New(cc).MapStringInterface())
 }
 ```

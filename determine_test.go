@@ -14,3 +14,12 @@ func TestType_IsInteger(t *testing.T) {
 	t.Log(New(a).IsInteger())
 	t.Log(New(a).IsNumeric())
 }
+
+func TestType_IsChineseName(t *testing.T) {
+	var a = "你好·啊"
+	t.Log(New(a).IsChineseName())
+	a = "你好•啊"
+	t.Log(New(a).IsChineseName())
+	a = "你好●啊"
+	t.Log(New(a).IsChineseName())
+}

@@ -9,7 +9,7 @@ type iSlice interface {
 	SliceInt64() []int64
 	SliceInt() []int
 	SliceInterface() []interface{}
-	SliceMapString() []MapString
+	SliceMapStringT() []MapStringT
 	SliceMapStringInterface() []map[string]interface{}
 }
 
@@ -96,12 +96,12 @@ func (t Type) SliceInt() []int {
 	return res
 }
 
-// SliceMapString ...
-func (t Type) SliceMapString() []MapString {
+// SliceMapStringT ...
+func (t Type) SliceMapStringT() []MapStringT {
 	m := t.Slice()
-	var result []MapString
+	var result []MapStringT
 	for _, item := range m {
-		result = append(result, item.MapString())
+		result = append(result, item.MapStringT())
 	}
 	return result
 }

@@ -18,7 +18,7 @@ func TestNewT(t *testing.T) {
 	//b = New(struct {A string}{"bcd"})
 	//b = New(New(3))
 	b = New(map[T]T{New("a"): New(3)})
-	t.Log(b.MapInt64()[0])
+	t.Log(b.MapIntT64T()[0])
 
 	t.Log(b.String())
 	t.Log(b.Float64())
@@ -38,14 +38,14 @@ func TestNewT(t *testing.T) {
 
 func TestType_MapStr(t *testing.T) {
 	var m = New(map[string]interface{}{"a": 2, "b": "c", "d": "d"})
-	a := m.MapString()
+	a := m.MapStringT()
 	t.Log(a)
 	t.Log(a["a"])
 }
 
 func TestType_Map(t *testing.T) {
 	var m = New(map[interface{}]interface{}{"a": 2, 2: "c", 3.3: "d", true: true, false: 3})
-	a := m.MapInterface()
+	a := m.MapInterfaceT()
 	t.Log(a)
 	t.Log(a["a"])
 	t.Log(a[2].String())
