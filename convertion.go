@@ -1,233 +1,120 @@
 package t
 
-import (
-	"encoding/json"
-	"fmt"
-	"reflect"
-	"strconv"
-	"strings"
-	"time"
-)
+type iConvertion interface {
 
-// ParseFloat64 ...
-func ParseFloat64(o interface{}) (res float64) {
-	switch value := o.(type) {
-	case float32:
-		return float64(value)
-	case float64:
-		return value
-	default:
-		var str = ParseString(o)
-		var strUpper = strings.ToUpper(str)
-		if strUpper == "TRUE" {
-			str = "1"
-		} else if strUpper == "FALSE" {
-			str = "0"
-		}
-		res, _ = strconv.ParseFloat(str, 64)
-	}
-	return
+	Interface() interface{}
+	// String 转换对象为 string 类型
+	String() string
+	Float64() float64
+	Float32() float32
+	Int64() int64
+	Int() int
+	Int32() int32
+	Int16() int16
+	Int8() int8
+	Uint64() uint64
+	Uint() uint
+	Uint32() uint32
+	Uint16() uint16
+	Uint8() uint8
+	Bool() bool
+	Byte() byte
+	Bytes() []byte
+	Rune() rune
+	Runes() []rune
 }
 
-// ParseFloat32 ...
-func ParseFloat32(o interface{}) float32 {
-	return float32(ParseFloat64(o))
+// Interface ...
+func (tc TypeContext) Interface() interface{} {
+	return tc.val
 }
 
-// ParseInt64 ...
-func ParseInt64(o interface{}) (res int64) {
-	switch val := o.(type) {
-	case int64:
-		return val
-	case int:
-		return int64(val)
-	case int32:
-		return int64(val)
-	case int16:
-		return int64(val)
-	case int8:
-		return int64(val)
-	case uint64:
-		return int64(val)
-	case uint:
-		return int64(val)
-	case uint32:
-		return int64(val)
-	case uint16:
-		return int64(val)
-	case uint8:
-		return int64(val)
-	default:
-		return int64(ParseFloat64(o))
-	}
+// String ...
+func (tc TypeContext) String() string {
+	return ParseString(tc.val)
 }
 
-// ParseInt32 ...
-func ParseInt32(o interface{}) (res int32) {
-	res = int32(ParseFloat64(o))
-	return
+// Float64 ...
+func (tc TypeContext) Float64() float64 {
+	return ParseFloat64(tc.val)
 }
 
-// ParseInt16 ...
-func ParseInt16(o interface{}) (res int16) {
-	res = int16(ParseFloat64(o))
-	return
+// Float32 ...
+func (tc TypeContext) Float32() float32 {
+	return ParseFloat32(tc.val)
 }
 
-// ParseInt8 ...
-func ParseInt8(o interface{}) (res int8) {
-	res = int8(ParseFloat64(o))
-	return
+// Int64 ...
+func (tc TypeContext) Int64() int64 {
+	return ParseInt64(tc.val)
 }
 
-// ParseInt ...
-func ParseInt(o interface{}) int {
-	return int(ParseInt64(o))
+// Int ...
+func (tc TypeContext) Int() int {
+	return ParseInt(tc.val)
 }
 
-// ParseUint64 ...
-func ParseUint64(o interface{}) uint64 {
-	return uint64(ParseInt64(o))
+// Int32 ...
+func (tc TypeContext) Int32() int32 {
+	return int32(ParseInt64(tc.val))
 }
 
-// ParseUint32 ...
-func ParseUint32(o interface{}) uint32 {
-	return uint32(ParseInt64(o))
+// Int16 ...
+func (tc TypeContext) Int16() int16 {
+	return int16(ParseInt64(tc.val))
 }
 
-// ParseUint16 ...
-func ParseUint16(o interface{}) uint16 {
-	return uint16(ParseInt64(o))
+// Int8 ...
+func (tc TypeContext) Int8() int8 {
+	return int8(ParseInt64(tc.val))
 }
 
-// ParseUint8 ...
-func ParseUint8(o interface{}) uint8 {
-	return uint8(ParseInt64(o))
+// Uint64 ...
+func (tc TypeContext) Uint64() uint64 {
+	return ParseUint64(tc.val)
 }
 
-// ParseUint ...
-func ParseUint(o interface{}) uint {
-	return uint(ParseInt64(o))
+// Uint ...
+func (tc TypeContext) Uint() uint {
+	return ParseUint(tc.val)
 }
 
-// ParseBool ...
-func ParseBool(o interface{}) bool {
-	var str = ParseString(o)
-	str = strings.ToUpper(str)
-	switch str {
-	case "", "0", "FALSE", "<NIL>":
-		return false
-	default:
-		return true
-	}
+// Uint32 ...
+func (tc TypeContext) Uint32() uint32 {
+	return uint32(ParseUint(tc.val))
 }
 
-// ParseByte ...
-func ParseByte(i interface{}) byte {
-	if v, ok := i.(byte); ok {
-		return v
-	}
-	return ParseUint8(i)
+// Uint16 ...
+func (tc TypeContext) Uint16() uint16 {
+	return uint16(ParseUint(tc.val))
 }
 
-// ParseBytes ...
-func ParseBytes(o interface{}) []byte {
-	if o == nil {
-		return nil
-	}
-	switch value := o.(type) {
-	case []byte:
-		return value
-	default:
-		tmp := ParseString(o)
-		return []byte(tmp)
-	}
+// Uint8 ...
+func (tc TypeContext) Uint8() uint8 {
+	return uint8(ParseUint(tc.val))
 }
 
-// ParseRune ...
-func Rune(o interface{}) rune {
-	if v, ok := o.(rune); ok {
-		return v
-	}
-	return rune(ParseInt32(o))
+// Bool ...
+func (tc TypeContext) Bool() bool {
+	return ParseBool(tc.val)
+}
+
+// Byte ...
+func (tc TypeContext) Byte() byte {
+	return ParseByte(tc.val)
+}
+
+// Bytes ...
+func (tc TypeContext) Bytes() []byte {
+	return ParseBytes(tc.val)
+}
+
+// Rune ...
+func (tc TypeContext) Rune() rune {
+	return ParseRune(tc.val)
 }
 
 // ParseRunes ...
-func Runes(o interface{}) []rune {
-	if v, ok := o.([]rune); ok {
-		return v
-	}
-	return []rune(ParseString(o))
-}
-
-// ParseString 任意对象转换为字符串
-func ParseString(o interface{}) string {
-	if o == nil {
-		return ""
-	}
-	switch value := o.(type) {
-	case string:
-		return value
-	case []byte:
-		return string(value)
-	case int:
-		return strconv.Itoa(value)
-	case int8:
-		return strconv.Itoa(int(value))
-	case int16:
-		return strconv.Itoa(int(value))
-	case int32:
-		return strconv.Itoa(int(value))
-	case int64:
-		return strconv.FormatInt(value, 10)
-	case uint:
-		return strconv.FormatUint(uint64(value), 10)
-	case uint8:
-		return strconv.FormatUint(uint64(value), 10)
-	case uint16:
-		return strconv.FormatUint(uint64(value), 10)
-	case uint32:
-		return strconv.FormatUint(uint64(value), 10)
-	case uint64:
-		return strconv.FormatUint(value, 10)
-	case float32:
-		return strconv.FormatFloat(float64(value), 'f', -1, 32)
-	case float64:
-		return strconv.FormatFloat(value, 'f', -1, 64)
-	case bool:
-		return strconv.FormatBool(value)
-	case *time.Time:
-		if value == nil {
-			return ""
-		}
-		return value.String()
-	default:
-		if value == nil {
-			return ""
-		}
-		// 如果是复杂类型,则转换为json
-		rv := reflect.ValueOf(value)
-		kind := rv.Kind()
-		switch kind {
-		case reflect.Chan,
-			reflect.Map,
-			reflect.Slice,
-			reflect.Func,
-			reflect.Ptr,
-			reflect.Interface,
-			reflect.UnsafePointer:
-			if rv.IsNil() {
-				return ""
-			}
-		}
-		if kind == reflect.Ptr {
-			return ParseString(rv.Elem().Interface())
-		}
-		// 如果不能转换为json的, 则原样输出为字符串
-		if js, err := json.Marshal(value); err != nil {
-			return fmt.Sprint(value)
-		} else {
-			return string(js)
-		}
-	}
+func (tc TypeContext) Runes() []rune {
+	return ParseRunes(tc.val)
 }

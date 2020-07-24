@@ -6,7 +6,7 @@ import (
 )
 
 func TestNewT(t *testing.T) {
-	var b T
+	var b Type
 
 	//b = New("abc")
 	//b = New(1.3)
@@ -17,7 +17,7 @@ func TestNewT(t *testing.T) {
 	//b = New(nil)
 	//b = New(struct {A string}{"bcd"})
 	//b = New(New(3))
-	b = New(map[T]T{New("a"): New(3)})
+	b = New(map[Type]Type{New("a"): New(3)})
 	t.Log(b.MapIntT64T()[0])
 
 	t.Log(b.String())
@@ -36,14 +36,14 @@ func TestNewT(t *testing.T) {
 	t.Log(b.Bool())
 }
 
-func TestType_MapStr(t *testing.T) {
+func TestTypeContext_MapStr(t *testing.T) {
 	var m = New(map[string]interface{}{"a": 2, "b": "c", "d": "d"})
 	a := m.MapStringT()
 	t.Log(a)
 	t.Log(a["a"])
 }
 
-func TestType_Map(t *testing.T) {
+func TestTypeContext_Map(t *testing.T) {
 	var m = New(map[interface{}]interface{}{"a": 2, 2: "c", 3.3: "d", true: true, false: 3})
 	a := m.MapInterfaceT()
 	t.Log(a)
@@ -54,14 +54,14 @@ func TestType_Map(t *testing.T) {
 	t.Log(a[false])
 }
 
-func TestType_Map2(t *testing.T) {
+func TestTypeContext_Map2(t *testing.T) {
 	var m = New(`{"a": 2, "b":3,"33":{"331":"d"}}`)
 	a := m.Map()
 	t.Log(a[New("a")])
 	t.Log(m.Extract("33.331"))
 }
 
-func TestType_Slice(t *testing.T) {
+func TestTypeContext_Slice(t *testing.T) {
 	var a = New([]string{"a", "b"})
 
 	for _, v := range a.Slice() {
@@ -69,7 +69,7 @@ func TestType_Slice(t *testing.T) {
 	}
 }
 
-func TestType_Bind(t *testing.T) {
+func TestTypeContext_Bind(t *testing.T) {
 	type json struct {
 		A interface{} `json:"a"`
 		B string      `json:"b"`
@@ -80,14 +80,14 @@ func TestType_Bind(t *testing.T) {
 	t.Logf("%+v", js)
 }
 
-func BenchmarkType_Int64(b *testing.B) {
-	var a T = New("2.3")
+func BenchmarkTypeContext_Int64(b *testing.B) {
+	var a Type = New("2.3")
 	for i := 0; i < b.N; i++ {
 		a.Int64()
 	}
 }
 
-func TestType_Map3(t *testing.T) {
+func TestTypeContext_Map3(t *testing.T) {
 	//res := New([]string{"a","b"})
 	res := New(`{"aa":11,"bb":["a","b"]}`)
 	//res := New([]map[string]interface{}{

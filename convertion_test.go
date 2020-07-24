@@ -33,5 +33,5 @@ func TestRunes(t *testing.T) {
 	var a= "你好啊abc"
 	t.Log(len(a))
 	t.Log(utf8.RuneCountInString(a))
-	t.Log(len(Runes(a)))
+	t.Log(len(ParseRunes(a)))
 }

@@ -18,7 +18,7 @@ import (
 )
 
 func main()  {
-    var b t.T
+    var b t.Type
     b = t.New("2.3")
 
     fmt.Println(b.String())

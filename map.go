@@ -1,6 +1,8 @@
 package t
 
-import "reflect"
+import (
+	"reflect"
+)
 
 type iMap interface {
 	Map() Map
@@ -11,28 +13,28 @@ type iMap interface {
 	MapStringInterface() map[string]interface{}
 }
 // Map ...
-type Map map[T]T
+type Map map[Type]Type
 
 // MapInterfaceT ...
-type MapInterfaceT map[interface{}]T
+type MapInterfaceT map[interface{}]Type
 
 // MapStringT ...
-type MapStringT map[string]T
+type MapStringT map[string]Type
 
 // MapIntT64T ...
-type MapIntT64T map[int64]T
-type MapIntT map[int]T
+type MapIntT64T map[int64]Type
+type MapIntT map[int]Type
 
 //// MapStringInterface ...
 //type MapStringInterface map[string]interface{}
 
 
 // Map ...
-func (t Type) Map() Map {
-	if t.val==nil {
+func (tc TypeContext) Map() Map {
+	if tc.val==nil {
 		return Map{}
 	}
-	ref := reflect.Indirect(reflect.ValueOf(t.val))
+	ref := reflect.Indirect(reflect.ValueOf(tc.val))
 	var res = Map{}
 	switch ref.Kind() {
 	case reflect.Map:
@@ -43,7 +45,7 @@ func (t Type) Map() Map {
 		}
 	default:
 		var res2 = map[string]interface{}{}
-		err := t.Bind(&res2)
+		err := tc.Bind(&res2)
 		if err != nil {
 			return Map{}
 		}
@@ -55,8 +57,8 @@ func (t Type) Map() Map {
 }
 
 // MapInterfaceT ...
-func (t Type) MapInterfaceT() MapInterfaceT {
-	m := t.Map()
+func (tc TypeContext) MapInterfaceT() MapInterfaceT {
+	m := tc.Map()
 	var res = make(MapInterfaceT)
 	for k, v := range m {
 		res[k.Interface()] = v
@@ -65,8 +67,8 @@ func (t Type) MapInterfaceT() MapInterfaceT {
 }
 
 // MapStringT ...
-func (t Type) MapStringT() MapStringT {
-	m := t.Map()
+func (tc TypeContext) MapStringT() MapStringT {
+	m := tc.Map()
 	var res = make(MapStringT)
 	for k, v := range m {
 		res[k.String()] = v
@@ -75,8 +77,8 @@ func (t Type) MapStringT() MapStringT {
 }
 
 // MapStringInterface ...
-func (t Type) MapStringInterface() map[string]interface{} {
-	m := t.Map()
+func (tc TypeContext) MapStringInterface() map[string]interface{} {
+	m := tc.Map()
 	var res = make(map[string]interface{})
 	for k, v := range m {
 		res[k.String()] = v.Interface()
@@ -85,8 +87,8 @@ func (t Type) MapStringInterface() map[string]interface{} {
 }
 
 // MapIntT64T ...
-func (t Type) MapIntT64T() MapIntT64T {
-	m := t.Map()
+func (tc TypeContext) MapIntT64T() MapIntT64T {
+	m := tc.Map()
 	var res = make(MapIntT64T)
 	for k, v := range m {
 		res[k.Int64()] = v
@@ -95,8 +97,8 @@ func (t Type) MapIntT64T() MapIntT64T {
 }
 
 // MapIntT64T ...
-func (t Type) MapIntT() MapIntT {
-	m := t.Map()
+func (tc TypeContext) MapIntT() MapIntT {
+	m := tc.Map()
 	var res = make(MapIntT)
 	for k, v := range m {
 		res[k.Int()] = v

@@ -1,6 +1,8 @@
 package t
 
-import "reflect"
+import (
+	"reflect"
+)
 
 type iSlice interface {
 	Slice() Slice
@@ -14,14 +16,14 @@ type iSlice interface {
 }
 
 // Slice ...
-type Slice []T
+type Slice []Type
 
 // Slice ...
-func (t Type) Slice() Slice {
-	if t.val == nil {
+func (tc TypeContext) Slice() Slice {
+	if tc.val == nil {
 		return Slice{}
 	}
-	ref := reflect.Indirect(reflect.ValueOf(t.val))
+	ref := reflect.Indirect(reflect.ValueOf(tc.val))
 	var res = Slice{}
 	switch ref.Kind() {
 	case reflect.Slice:
@@ -37,8 +39,8 @@ func (t Type) Slice() Slice {
 }
 
 // SliceInterface ...
-func (t Type) SliceInterface() []interface{} {
-	s := t.Slice()
+func (tc TypeContext) SliceInterface() []interface{} {
+	s := tc.Slice()
 	var res = []interface{}{}
 	for _, item := range s {
 		res = append(res, item.Interface())
@@ -47,8 +49,8 @@ func (t Type) SliceInterface() []interface{} {
 }
 
 // SliceMapStringInterface ...
-func (t Type) SliceMapStringInterface() []map[string]interface{} {
-	s := t.Slice()
+func (tc TypeContext) SliceMapStringInterface() []map[string]interface{} {
+	s := tc.Slice()
 	var res = []map[string]interface{}{}
 	for _, item := range s {
 		res = append(res, item.MapStringInterface())
@@ -57,8 +59,8 @@ func (t Type) SliceMapStringInterface() []map[string]interface{} {
 }
 
 // SliceString ...
-func (t Type) SliceString() []string {
-	s := t.Slice()
+func (tc TypeContext) SliceString() []string {
+	s := tc.Slice()
 	var res = []string{}
 	for _, item := range s {
 		res = append(res, item.String())
@@ -67,8 +69,8 @@ func (t Type) SliceString() []string {
 }
 
 // SliceFloat64 ...
-func (t Type) SliceFloat64() []float64 {
-	s := t.Slice()
+func (tc TypeContext) SliceFloat64() []float64 {
+	s := tc.Slice()
 	var res = []float64{}
 	for _, item := range s {
 		res = append(res, item.Float64())
@@ -77,8 +79,8 @@ func (t Type) SliceFloat64() []float64 {
 }
 
 // SliceInt64 ...
-func (t Type) SliceInt64() []int64 {
-	s := t.Slice()
+func (tc TypeContext) SliceInt64() []int64 {
+	s := tc.Slice()
 	var res = []int64{}
 	for _, item := range s {
 		res = append(res, item.Int64())
@@ -87,8 +89,8 @@ func (t Type) SliceInt64() []int64 {
 }
 
 // SliceInt ...
-func (t Type) SliceInt() []int {
-	s := t.Slice()
+func (tc TypeContext) SliceInt() []int {
+	s := tc.Slice()
 	var res = []int{}
 	for _, item := range s {
 		res = append(res, item.Int())
@@ -97,8 +99,8 @@ func (t Type) SliceInt() []int {
 }
 
 // SliceMapStringT ...
-func (t Type) SliceMapStringT() []MapStringT {
-	m := t.Slice()
+func (tc TypeContext) SliceMapStringT() []MapStringT {
+	m := tc.Slice()
 	var result []MapStringT
 	for _, item := range m {
 		result = append(result, item.MapStringT())
