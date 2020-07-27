@@ -8,7 +8,6 @@ func TestTypeContext_IsFloat(t *testing.T) {
 	t.Log(New(a).IsFloat())
 }
 
-
 func TestTypeContext_IsInteger(t *testing.T) {
 	var a = "2342"
 	t.Log(New(a).IsInteger())

@@ -100,3 +100,39 @@ func convertComplex() {
 	fmt.Printf("%#v \n", t.New(cc).MapStringInterface())
 }
 ```
+
+### 4. 验证规则判断
+```go
+t.New("http://www.gorose.com").IsUrl()
+t.New("qq@gorose.com").IsEmail()
+```
+所有判断方法
+```go
+
+// iDetermine 判断
+type iDetermine interface {
+	IsNumeric() bool                        // 是否数字
+	IsInteger() bool                        // 是否整数
+	IsFloat() bool                          // 是否浮点数
+	IsZero() bool                           // 是否零值
+	IsChineseCharacters() bool              // 是否汉字
+	IsChineseName() bool                    // 是否中文名字
+	IsHost() bool                           // 是否域名
+	IsUrl() bool                            // 是否互联网url地址
+	IsEmail() bool                          // 是否邮箱地址
+	IsChineseMobile() bool                  // 是否中国手机号
+	IsDate() bool                           // 是否常用的日期格式
+	IsDatetime() bool                       // 是否常用的日期时间格式
+	IsIpV4() bool                           // 是否ipv4地址
+	IsIpV6() bool                           // 是否ipv6地址
+	IsIp() bool                             // 是否ip地址
+	IsChineseID() bool                      // 是否中国大陆身份证号码
+	IsXml() bool                            // 是否xml
+	IsJson() bool                           // 是否json
+	IsJsonMap() bool                        // 是否是json对象
+	IsJsonSlice() bool                      // 是否是json数组
+	IsBetween(min, max interface{}) bool    // 是否在两数之间
+	IsBetweenFloat64(min, max float64) bool // 是否在两个浮点数之间
+	IsBetweenAlpha(min, max string) bool    // 是否在两个字符之间
+}
+```

@@ -12,6 +12,7 @@ type iMap interface {
 	MapIntT() MapIntT
 	MapStringInterface() map[string]interface{}
 }
+
 // Map ...
 type Map map[Type]Type
 
@@ -28,10 +29,9 @@ type MapIntT map[int]Type
 //// MapStringInterface ...
 //type MapStringInterface map[string]interface{}
 
-
 // Map ...
 func (tc TypeContext) Map() Map {
-	if tc.val==nil {
+	if tc.val == nil {
 		return Map{}
 	}
 	ref := reflect.Indirect(reflect.ValueOf(tc.val))
@@ -105,4 +105,3 @@ func (tc TypeContext) MapIntT() MapIntT {
 	}
 	return res
 }
-

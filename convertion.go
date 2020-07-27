@@ -1,7 +1,6 @@
 package t
 
 type iConvertion interface {
-
 	Interface() interface{}
 	// String 转换对象为 string 类型
 	String() string

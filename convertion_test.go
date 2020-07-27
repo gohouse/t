@@ -30,7 +30,7 @@ func TestParseString(t *testing.T) {
 }
 
 func TestRunes(t *testing.T) {
-	var a= "你好啊abc"
+	var a = "你好啊abc"
 	t.Log(len(a))
 	t.Log(utf8.RuneCountInString(a))
 	t.Log(len(ParseRunes(a)))

@@ -1,4 +1,5 @@
 package t
+
 type iHelper interface {
 	InArray(args []interface{}) bool
 	InArrayString(args []string) bool

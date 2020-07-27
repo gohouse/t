@@ -95,7 +95,7 @@ func TestTypeContext_Map3(t *testing.T) {
 	//})
 	r := res.MapStringInterface()
 	fmt.Println(r)
-	fmt.Println("res.IsJsonSlice:",res.IsJsonMap())
-	fmt.Printf("res.Extract-0.bb.0 : %#v\n",res.Extract("0.bb.0").String())
-	fmt.Printf("res.Extract -bb: %#v\n",res.Extract("bb.0").String())
+	fmt.Println("res.IsJsonSlice:", res.IsJsonMap())
+	fmt.Printf("res.Extract-0.bb.0 : %#v\n", res.Extract("0.bb.0").String())
+	fmt.Printf("res.Extract -bb: %#v\n", res.Extract("bb.0").String())
 }
