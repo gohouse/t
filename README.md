@@ -108,7 +108,6 @@ t.New("qq@gorose.com").IsEmail()
 ```
 所有判断方法
 ```go
-
 // iDetermine 判断
 type iDetermine interface {
 	IsNumeric() bool                        // 是否数字

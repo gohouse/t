@@ -15,16 +15,16 @@ type iDetermine interface {
 	IsFloat() bool                          // 是否浮点数
 	IsZero() bool                           // 是否零值
 	IsChineseCharacters() bool              // 是否汉字
-	IsChineseName() bool                    // 是否中文名字
 	IsHost() bool                           // 是否域名
 	IsUrl() bool                            // 是否互联网url地址
 	IsEmail() bool                          // 是否邮箱地址
-	IsChineseMobile() bool                  // 是否中国手机号
 	IsDate() bool                           // 是否常用的日期格式
 	IsDatetime() bool                       // 是否常用的日期时间格式
 	IsIpV4() bool                           // 是否ipv4地址
 	IsIpV6() bool                           // 是否ipv6地址
 	IsIp() bool                             // 是否ip地址
+	IsChineseName() bool                    // 是否中文名字
+	IsChineseMobile() bool                  // 是否中国手机号
 	IsChineseID() bool                      // 是否中国大陆身份证号码
 	IsXml() bool                            // 是否xml
 	IsJson() bool                           // 是否json
@@ -77,21 +77,9 @@ func (tc TypeContext) IsChineseCharacters() bool {
 	return exp.Match(tc.Bytes())
 }
 
-// IsChineseCharacters 是否中国的名字
-func (tc TypeContext) IsChineseName() bool {
-	exp := regexp.MustCompile("^[\u4e00-\u9fa5]+[[·•●][\u4e00-\u9fa5]+]*$")
-	return exp.Match(tc.Bytes())
-}
-
 // IsEmail 是否邮箱地址
 func (tc TypeContext) IsEmail() bool {
 	exp := regexp.MustCompile(`^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$`)
-	return exp.Match(tc.Bytes())
-}
-
-// IsEmail 是否中国手机号
-func (tc TypeContext) IsChineseMobile() bool {
-	exp := regexp.MustCompile(`^1[3456789]\d{9}$`)
 	return exp.Match(tc.Bytes())
 }
 
@@ -105,6 +93,18 @@ func (tc TypeContext) IsHost() bool {
 func (tc TypeContext) IsUrl() bool {
 	var strRegex = `(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?` //请求参数结尾- 英文或数字和[]内的各种字符
 	exp := regexp.MustCompile(strRegex)
+	return exp.Match(tc.Bytes())
+}
+
+// IsChineseCharacters 是否中国的名字
+func (tc TypeContext) IsChineseName() bool {
+	exp := regexp.MustCompile("^[\u4e00-\u9fa5]+[[·•●][\u4e00-\u9fa5]+]*$")
+	return exp.Match(tc.Bytes())
+}
+
+// IsEmail 是否中国手机号
+func (tc TypeContext) IsChineseMobile() bool {
+	exp := regexp.MustCompile(`^1[3456789]\d{9}$`)
 	return exp.Match(tc.Bytes())
 }
 
