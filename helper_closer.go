@@ -27,18 +27,15 @@ func WithRecover(h func(), errDefaultRecover ...func(err error)) {
 	h()
 }
 
-var mu *sync.Mutex
-var mur *sync.RWMutex
-
-func WithLockContext(ctx func()) {
+func WithLockContext(mu *sync.Mutex, fn func()) {
 	mu.Lock()
 	defer mu.Unlock()
-	ctx()
+	fn()
 }
-func WithRLockContext(ctx func()) {
+func WithRLockContext(mur *sync.RWMutex, fn func()) {
 	mur.RLock()
 	defer mur.RUnlock()
-	ctx()
+	fn()
 }
 
 func WithTicker(duration time.Duration, fn func()) {
@@ -50,4 +47,13 @@ func WithTicker(duration time.Duration, fn func()) {
 			fn()
 		}
 	}
+}
+
+func WithRunTimeContext(closer func(), callback func(time.Duration)) {
+	// 记录开始时间
+	start := time.Now()
+	closer()
+	timeduration := time.Since(start)
+	//log.Println("执行完毕,用时:", timeduration.Seconds(),timeduration.Seconds()>1.1)
+	callback(timeduration)
 }
