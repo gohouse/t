@@ -38,6 +38,24 @@ func (tc TypeContext) Slice() Slice {
 	return res
 }
 
+func (s Slice) String() string {
+	return New(s.SliceString()).String()
+}
+
+func (s Slice) SliceString() (res []string) {
+	for _, v := range s {
+		res = append(res, v.String())
+	}
+	return
+}
+
+func (s Slice) SliceInt() (res []int) {
+	for _, v := range s {
+		res = append(res, v.Int())
+	}
+	return
+}
+
 // SliceInterface ...
 func (tc TypeContext) SliceInterface() []interface{} {
 	s := tc.Slice()

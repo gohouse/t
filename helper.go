@@ -77,3 +77,38 @@ func Min(args ...interface{}) Type {
 	return New(min)
 }
 
+// ArrayUnique 数组去重
+func ArrayUniqueString(arr []string) (newArr []string) {
+	newArr = make([]string, 0)
+	for i := 0; i < len(arr); i++ {
+		repeat := false
+		for j := i + 1; j < len(arr); j++ {
+			if arr[i] == arr[j] {
+				repeat = true
+				break
+			}
+		}
+		if !repeat {
+			newArr = append(newArr, arr[i])
+		}
+	}
+	return newArr
+}
+
+// ArrayUnique 数组去重
+func ArrayUnique(array interface{}) (newArr Slice) {
+	arr := New(array).Slice()
+	for i := 0; i < len(arr); i++ {
+		repeat := false
+		for j := i + 1; j < len(arr); j++ {
+			if arr[i] == arr[j] {
+				repeat = true
+				break
+			}
+		}
+		if !repeat {
+			newArr = append(newArr, arr[i])
+		}
+	}
+	return newArr
+}
