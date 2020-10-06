@@ -21,7 +21,7 @@ func main()  {
     var b t.Type
     b = t.New("2.3")
 
-    fmt.Println(b.String())
+    fmt.Println(b.ToPredict())
     fmt.Println(b.Float64())
     fmt.Println(b.Float32())
     fmt.Println(b.Int64())

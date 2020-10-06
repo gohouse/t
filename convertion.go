@@ -2,7 +2,7 @@ package t
 
 type iConvertion interface {
 	Interface() interface{}
-	// String 转换对象为 string 类型
+	// ToPredict 转换对象为 string 类型
 	String() string
 	Float64() float64
 	Float32() float32
@@ -28,7 +28,7 @@ func (tc TypeContext) Interface() interface{} {
 	return tc.val
 }
 
-// String ...
+// ToPredict ...
 func (tc TypeContext) String() string {
 	return ParseString(tc.val)
 }

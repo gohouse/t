@@ -27,12 +27,12 @@ func WithRecover(h func(), errDefaultRecover ...func(err error)) {
 	h()
 }
 
-func WithLockContext(mu *sync.Mutex, fn func()) {
+func WithMutexContext(mu *sync.Mutex, fn func()) {
 	mu.Lock()
 	defer mu.Unlock()
 	fn()
 }
-func WithRLockContext(mur *sync.RWMutex, fn func()) {
+func WithRWMutexContext(mur *sync.RWMutex, fn func()) {
 	mur.RLock()
 	defer mur.RUnlock()
 	fn()

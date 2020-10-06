@@ -5,11 +5,11 @@ import (
 )
 
 // If 三元判断
-func If(b bool, x, y interface{}) interface{} {
+func If(b bool, x, y interface{}) Type {
 	if b {
-		return x
+		return New(x)
 	}
-	return y
+	return New(y)
 }
 
 // SpliteAndTrimSpace 字符串分割并且去掉两边的空格
@@ -22,9 +22,9 @@ func SpliteAndTrimSpace(s, sep string) (res []string) {
 }
 
 // InArray 是否存在给定的数组中
-func InArray(arg interface{}, args []interface{}) bool {
-	for _, v := range args {
-		if New(v).String() == New(arg).String() {
+func InArray(argv interface{}, haystack interface{}) bool {
+	for _, v := range New(haystack).Slice() {
+		if v.String() == New(argv).String() {
 			return true
 		}
 	}
@@ -76,3 +76,4 @@ func Min(args ...interface{}) Type {
 	}
 	return New(min)
 }
+

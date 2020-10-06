@@ -2,6 +2,7 @@ package t
 
 import (
 	"encoding/json"
+	"regexp"
 	"strings"
 )
 
@@ -10,6 +11,7 @@ type iHandle interface {
 	Bind(o interface{}) error
 	Extract(keys ...interface{}) Type
 	ExtractWithDefault(keys []interface{}, defaultVal interface{}) Type
+	ExtractUrl() []string
 }
 
 // Bind 将绑定结果当做json,来绑定到对象上
@@ -20,7 +22,7 @@ func (tc TypeContext) Bind(o interface{}) error {
 // ExtractWithDefault 多层次抽取值, 如果是零值, 则返回给定的默认值
 func (tc TypeContext) ExtractWithDefault(keys []interface{}, defaultVal interface{}) Type {
 	v := tc.Extract(keys...)
-	return If(v.IsZero(), New(defaultVal), v).(Type)
+	return If(v.IsZero(), New(defaultVal), v)
 }
 
 // Extract 多层次抽取值
@@ -75,4 +77,10 @@ func (tc TypeContext) Extract(keys ...interface{}) Type {
 	}
 
 	return New(currentVal)
+}
+
+func (tc TypeContext) ExtractUrl() []string {
+	var strRegex = `(ht|f)tp(s?)\:\/\/[0-9a-zA-Z]([-.\w]*[0-9a-zA-Z])*(:(0-9)*)*(\/?)([a-zA-Z0-9\-\.\?\,\'\/\\\+&amp;%\$#_]*)?` //请求参数结尾- 英文或数字和[]内的各种字符
+	exp := regexp.MustCompile(strRegex)
+	return exp.FindAllString(tc.String(), -1)
 }

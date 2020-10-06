@@ -1,7 +1,7 @@
 package t
 
 type iHelper interface {
-	InArray(args []interface{}) bool
+	InArray(haystack interface{}) bool
 	InArrayString(args []string) bool
 	SpliteAndTrimSpace(sep string) (res []string)
 	Length() int
@@ -13,8 +13,8 @@ func (tc TypeContext) SpliteAndTrimSpace(sep string) (res []string) {
 }
 
 // InArray 是否存在给定的数组中
-func (tc TypeContext) InArray(args []interface{}) bool {
-	return InArray(tc.val, args)
+func (tc TypeContext) InArray(haystack interface{}) bool {
+	return InArray(tc.val, haystack)
 }
 
 // InArrayString 是否存在给定的字符串数组中
