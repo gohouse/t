@@ -16,7 +16,9 @@ func If(b bool, x, y interface{}) Type {
 func SpliteAndTrimSpace(s, sep string) (res []string) {
 	split := strings.Split(s, sep)
 	for _, v := range split {
-		res = append(res, strings.TrimSpace(v))
+		if v != "" {
+			res = append(res, strings.TrimSpace(v))
+		}
 	}
 	return
 }
